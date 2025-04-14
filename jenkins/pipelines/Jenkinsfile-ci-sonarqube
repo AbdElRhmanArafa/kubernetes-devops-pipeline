@@ -1,0 +1,14 @@
+pipeline {
+    agent kubeagent
+
+    stages {
+        stage('build') {
+            steps {
+                script {
+                    echo "Building the project..."
+                    sh 'mvn clean package'
+                }
+            }
+        }
+    }
+}
