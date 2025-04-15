@@ -12,19 +12,28 @@ pipeline {
         stage('build') {
             steps {
                 container('maven') {
-                    script {
-                        echo "Cloning the repository..."
-                        sh 'git clone https://github.com/AbdElRhmanArafa/java-base-appliction.git'
-                        
-                        echo "Building the project..."
-                        dir('java-base-appliction') {
-                            echo "Maven version:"
-                            sh 'mvn --version'
-                            
-                            echo "Running Maven clean and package..."
-                            sh 'mvn clean package'
+                    echo 'Cloning the repository and building the project...'
+                    sh '''
+                        # Clone the repository
+                        git clone https://github.com/AbdElRhmanArafa/java-base-appliction.git
+                        # Navigate to the project directory
+                        cd java-base-appliction
+                        # Run Maven clean and package
+                        mvn clean package
+                    '''
+                }
+            }
+        }
+        stage('static analysis') {
+            steps {
+                container('maven') {
+                    echo 'Running SonarQube analysis...'
+                    sh '''
+                        # Run SonarQube analysis
+                        withSonarQubeEnv('sq1') {
+                            mvn sonar:sonar -Dsonar.projectKey=java-base-appliction
                         }
-                    }
+                    '''
                 }
             }
         }
