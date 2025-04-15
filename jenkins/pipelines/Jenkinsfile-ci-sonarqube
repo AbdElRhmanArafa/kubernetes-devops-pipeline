@@ -2,6 +2,11 @@ pipeline {
     agent {
         label 'maven'
     }
+    options {
+        disableConcurrentBuilds()
+        timestamps()
+        timeout(time: 1, unit: 'HOURS')
+    }
 
     stages {
         stage('build') {
