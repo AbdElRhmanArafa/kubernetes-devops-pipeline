@@ -53,7 +53,9 @@ pipeline {
             steps {
                 container('maven') {
                     echo 'Archiving the artifact...'
+                    dir('java-base-appliction') {
                         archiveArtifacts artifacts: 'Dockerfile, target', fingerprint: true
+                    }
                 }
             }
         }
@@ -62,7 +64,9 @@ pipeline {
     post {
         success {
             echo 'Triggering the next pipeline...'
-            build job: 'jenkins/pipelines/jenkinsfile-Dockerize', wait: false
+            sh "ls -l"
+            sh "pwd"
+            build job: './jenkins/pipelines/jenkinsfile-Dockerize', wait: false
         }
     }
 }
