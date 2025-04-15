@@ -30,6 +30,8 @@ pipeline {
                     echo 'Running SonarQube analysis...'
                     sh '''
                         # Run SonarQube analysis
+                        ls -la
+                        cd java-base-appliction
                         withSonarQubeEnv('sq1') {
                             mvn sonar:sonar -Dsonar.projectKey=java-base-appliction
                         }
