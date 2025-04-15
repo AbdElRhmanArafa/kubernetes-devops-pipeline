@@ -39,5 +39,15 @@ pipeline {
                 }
             }
         }
+        stage('quality gate') {
+            steps {
+                container('maven') {
+                    echo 'Waiting for SonarQube quality gate...'
+                    timeout(time: 1, unit: 'MINUTES') {
+                        waitForQualityGate abortPipeline: true
+                    }
+                }
+            }
+        }
     }
 }
