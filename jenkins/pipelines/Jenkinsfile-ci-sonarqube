@@ -7,12 +7,12 @@ pipeline {
         stage('build') {
             steps {
                 script {
+                    echo "Cloning the repository..."
+                    sh 'git clone https://github.com/AbdElRhmanArafa/java-base-appliction.git'
+                    sh 'cd java-base-appliction && pwd && ls -la'            
                     echo "Building the project..."
-                    sh 'pwd'
-                    sh 'ls -la'
-                    sh 'echo "Building the project..."'
-                    sh 'mvn --version'
-                    sh 'mvn clean package'
+                    sh 'cd java-base-appliction && mvn --version'
+                    sh 'cd java-base-appliction && mvn clean package'
                 }
             }
         }
