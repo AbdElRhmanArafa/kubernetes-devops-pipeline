@@ -11,8 +11,11 @@ pipeline {
                     sh 'git clone https://github.com/AbdElRhmanArafa/java-base-appliction.git'
                     sh 'cd java-base-appliction && pwd && ls -la'            
                     echo "Building the project..."
+                    echo "Maven version:"
                     sh 'cd java-base-appliction && mvn --version'
-                    sh 'cd java-base-appliction && mvn clean package'
+                    echo "install maven"
+                    sh 'mvn install'
+                    sh 'mvn clean package'
                 }
             }
         }
