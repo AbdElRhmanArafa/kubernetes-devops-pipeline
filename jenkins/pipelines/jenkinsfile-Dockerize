@@ -1,0 +1,19 @@
+pipeline {
+    agent {
+        label 'Dockerize'
+    }
+    options {
+        disableConcurrentBuilds()
+        timestamps()
+        timeout(time: 1, unit: 'HOURS')
+    }
+    stages {
+        stage('Dockerize') {
+            steps {
+                container('docker') {
+                    echo 'Dockerizing the application...'
+                }
+            }
+        }
+    }
+}
