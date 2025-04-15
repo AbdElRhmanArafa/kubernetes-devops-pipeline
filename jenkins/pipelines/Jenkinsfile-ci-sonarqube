@@ -8,6 +8,10 @@ pipeline {
             steps {
                 script {
                     echo "Building the project..."
+                    sh 'pwd'
+                    sh 'ls -la'
+                    sh 'echo "Building the project..."'
+                    sh 'mvn --version'
                     sh 'mvn clean package'
                 }
             }
