@@ -32,13 +32,9 @@ pipeline {
                     }
                     sh("tar -xzf ${params.artifactName}")
                     echo 'Dockerizing the application...'
-                    sh '''
-                        mv target/Dockerfile .
-                    '''
-                    sh '''
-                        docker build -t abdelrahman2arafa/java-base-appliction:${params.buildNumber} .
-                    docker push abdelrahman2arafa/java-base-appliction:${params.buildNumber}
-                    '''
+                    sh "mv target/Dockerfile ."
+                    sh "docker build -t abdelrahman2arafa/java-base-appliction:${params.buildNumber} ."
+                    sh "docker push abdelrahman2arafa/java-base-appliction:${params.buildNumber}"
                 }
             }
         }
