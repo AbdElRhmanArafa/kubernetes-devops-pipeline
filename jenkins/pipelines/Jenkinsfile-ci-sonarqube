@@ -14,6 +14,9 @@ pipeline {
                 container('maven') {
                     echo 'Cloning the repository and building the project...'
                     sh '''
+                        # insrall tar
+                        apt-get update
+                        apt-get install -y tar
                         # Clone the repository
                         git clone https://github.com/AbdElRhmanArafa/java-base-appliction.git
                         # Navigate to the project directory
