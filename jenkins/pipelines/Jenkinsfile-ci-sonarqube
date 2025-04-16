@@ -54,7 +54,8 @@ pipeline {
                 container('maven') {
                     echo 'Archiving the artifact...'
                     dir('java-base-appliction') {
-                        archiveArtifacts artifacts: 'Dockerfile, target', fingerprint: true
+                        sh 'tar -czf target.tar.gz target'
+                        archiveArtifacts artifacts: 'tar -czf target.tar.gz', fingerprint: true
                     }
                 }
             }
@@ -64,7 +65,11 @@ pipeline {
     post {
         success {
             echo 'Triggering the next pipeline...'
-            build job: 'Dockerize', wait: false
+            build job: 'Dockerize', wait: false, parameters: [
+                string(name: 'jobName', value: env.JOB_NAME),
+                string(name: 'buildNumber', value: env.BUILD_NUMBER),
+                string(name: 'artifactName', value: 'target.tar.gz')
+            ]
         }
     }
 }
