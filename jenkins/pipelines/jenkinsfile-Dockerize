@@ -31,6 +31,9 @@ pipeline {
                         sh("curl -u ${JENKINS_USER}:${JENKINS_PASS} -O ${env.JENKINS_URL}/job/${params.jobName}/${params.buildNumber}/artifact/${params.artifactName}")
                     }
                     sh("tar -xzf ${params.artifactName}")
+                    sh("ls -l")
+                    sh("pwd")
+                    sh("sleep 300")
                     echo 'Dockerizing the application...'
                     sh "mv target/Dockerfile ."
                     sh "docker build -t abdelrahman2arafa/java-base-appliction:${params.buildNumber} ."
