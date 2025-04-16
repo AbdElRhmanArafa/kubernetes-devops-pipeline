@@ -9,15 +9,27 @@ pipeline {
     }
     parameters {
         string(name: 'jobName', defaultValue: 'ci-sonarqube', description: 'Name of the upstream job')
-        string(name: 'buildNumber', defaultValue: '29', description: 'Build number of the upstream job')
+        string(name: 'buildNumber', defaultValue: '33', description: 'Build number of the upstream job')
         string(name: 'artifactName', defaultValue: 'target.tar.gz', description: 'Name of the artifact to download')
     }
     stages {
+        stage('Preparation') {
+            steps {
+                container('docker') {
+                    echo 'Preparing the environment...'
+                    sh 'install tar'
+                    sh 'apt-get update'
+                    sh 'apt-get install -y tar'
+                }
+            }
+        }
         stage('Dockerize') {
             steps {
                 container('docker') {
                     echo 'Downloading the artifact...'
-                    sh("wget ${env.JENKINS_URL}/job/${params.jobName}/${params.buildNumber}/artifact/${params.artifactName}")
+                    withCredentials([usernamePassword(credentialsId: 'jenkins-credentials-id', usernameVariable: 'JENKINS_USER', passwordVariable: 'JENKINS_PASS')]) {
+                        sh("wget --user=${JENKINS_USER} --password=${JENKINS_PASS} ${env.JENKINS_URL}/job/${params.jobName}/${params.buildNumber}/artifact/${params.artifactName}")
+                    }
                     sh("tar -xzf ${params.artifactName}")
                     echo 'Dockerizing the application...'
                     sh 'ls -l'
