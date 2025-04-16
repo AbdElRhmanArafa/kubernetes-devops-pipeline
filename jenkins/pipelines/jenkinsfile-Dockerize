@@ -18,7 +18,7 @@ pipeline {
                 container('docker'){
                     sh '''
                         echo "Waiting for the upstream job to finish..."
-                        sleep 100
+                        sleep 10
                     '''
                 }
             }
@@ -32,7 +32,13 @@ pipeline {
                     }
                     sh("tar -xzf ${params.artifactName}")
                     echo 'Dockerizing the application...'
-                    sh 'ls -l'
+                    sh '''
+                        mv target/Dockerfile .
+                    '''
+                    sh '''
+                        docker build -t abdelrahman2arafa/java-base-appliction:${params.buildNumber} .
+                    docker push abdelrahman2arafa/java-base-appliction:${params.buildNumber}
+                    '''
                 }
             }
         }
