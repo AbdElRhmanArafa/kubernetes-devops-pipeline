@@ -13,15 +13,6 @@ pipeline {
         string(name: 'artifactName', defaultValue: 'target.tar.gz', description: 'Name of the artifact to download')
     }
     stages {
-        stage('Prepare') {
-            steps {
-                container('docker') {
-                    echo 'Preparing the environment...'
-                    sh 'ls -l'
-                    sh 'apk add curl'
-                }
-            }
-        }
         stage('Dockerize') {
             steps {
                 container('docker') {
