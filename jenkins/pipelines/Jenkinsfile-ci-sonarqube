@@ -57,7 +57,7 @@ pipeline {
                 container('maven') {
                     echo 'Archiving the artifact...'
                     dir('java-base-appliction') {
-                        sh 'ls -l'
+                        sh 'cp Dockerfile target/'
                         sh 'tar -czf target.tar.gz target'
                         archiveArtifacts artifacts: 'target.tar.gz', fingerprint: true
                     }
