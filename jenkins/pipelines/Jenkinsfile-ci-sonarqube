@@ -55,7 +55,7 @@ pipeline {
                     echo 'Archiving the artifact...'
                     dir('java-base-appliction') {
                         sh 'tar -czf target.tar.gz target'
-                        archiveArtifacts artifacts: 'tar -czf target.tar.gz', fingerprint: true
+                        archiveArtifacts artifacts: 'target.tar.gz', fingerprint: true
                     }
                 }
             }
