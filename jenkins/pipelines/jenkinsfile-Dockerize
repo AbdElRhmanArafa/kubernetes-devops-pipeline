@@ -11,33 +11,47 @@ pipeline {
         string(name: 'jobName', defaultValue: 'ci-sonarqube', description: 'Name of the upstream job')
         string(name: 'buildNumber', defaultValue: '33', description: 'Build number of the upstream job')
         string(name: 'artifactName', defaultValue: 'target.tar.gz', description: 'Name of the artifact to download')
+        string(name: 'dockerImage', defaultValue: 'abdelrahman2arafa/java-base-appliction', description: 'Docker image name')
+        string(name: 'versionName', defaultValue: '1.0.0', description: 'Version name for the Docker image')
     }
     stages {
-        stage('waitting'){
-            steps{
-                container('docker'){
-                    sh '''
+        stage('Waiting for Upstream Job') {
+            steps {
+                container('docker') {
+                    script {
                         echo "Waiting for the upstream job to finish..."
-                        sleep 10
-                    '''
+                        sleep(time: 10, unit: 'SECONDS')
+                    }
                 }
             }
         }
-        stage('Dockerize') {
+        stage('Download Artifact') {
             steps {
                 container('docker') {
                     echo 'Downloading the artifact...'
                     withCredentials([usernamePassword(credentialsId: 'jenkins-credentials-id', usernameVariable: 'JENKINS_USER', passwordVariable: 'JENKINS_PASS')]) {
-                        sh("curl -u ${JENKINS_USER}:${JENKINS_PASS} -O ${env.JENKINS_URL}/job/${params.jobName}/${params.buildNumber}/artifact/${params.artifactName}")
+                        sh """
+                            curl -u ${JENKINS_USER}:${JENKINS_PASS} -O ${env.JENKINS_URL}/job/${params.jobName}/${params.buildNumber}/artifact/${params.artifactName}
+                        """
                     }
-                    sh("tar -xzf ${params.artifactName}")
-                    sh("ls -l")
-                    sh("pwd")
-                    sh("sleep 300")
+                    sh """
+                        tar -xzf ${params.artifactName}
+                        ls -l
+                        pwd
+                    """
+                }
+            }
+        }
+        stage('Build and Push Docker Image') {
+            steps {
+                container('docker') {
                     echo 'Dockerizing the application...'
-                    sh "mv target/Dockerfile ."
-                    sh "docker build -t abdelrahman2arafa/java-base-appliction:${params.buildNumber} ."
-                    sh "docker push abdelrahman2arafa/java-base-appliction:${params.buildNumber}"
+                    sh """
+                        mv target/Dockerfile .
+                        ls -l
+                        docker build -t ${params.dockerImage}:${params.versionName} .
+                        docker push ${params.dockerImage}:${params.versionName}
+                    """
                 }
             }
         }
