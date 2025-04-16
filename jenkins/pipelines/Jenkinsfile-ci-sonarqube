@@ -64,10 +64,7 @@ pipeline {
     post {
         success {
             echo 'Triggering the next pipeline...'
-            sh "ls -l"
-            sh "pwd"
-            sh "cat ./jenkins/pipelines/jenkinsfile-Dockerize"
-            build job: 'jenkins/pipelines/jenkinsfile-Dockerize', wait: false
+            build job: 'Dockerize', wait: false
         }
     }
 }

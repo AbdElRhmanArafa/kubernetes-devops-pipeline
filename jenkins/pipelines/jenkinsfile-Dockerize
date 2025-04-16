@@ -12,6 +12,8 @@ pipeline {
             steps {
                 container('docker') {
                     echo 'Dockerizing the application...'
+                    sh("wget ${env.JENKINS_URL}/job/$jobName/$buildNumber/artifact/$artifactName")
+                    sh 'ls -l'
                 }
             }
         }
