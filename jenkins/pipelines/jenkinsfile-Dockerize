@@ -18,7 +18,6 @@ pipeline {
                 container('docker') {
                     echo 'Preparing the environment...'
                     sh 'ls -l'
-                    sh 'curl --version '
                     sh 'apk add curl'
                 }
             }
