@@ -18,7 +18,7 @@ pipeline {
                 container('docker') {
                     echo 'Downloading the artifact...'
                     withCredentials([usernamePassword(credentialsId: 'jenkins-credentials-id', usernameVariable: 'JENKINS_USER', passwordVariable: 'JENKINS_PASS')]) {
-                        sh("wget --user=${JENKINS_USER} --password=${JENKINS_PASS} ${env.JENKINS_URL}/job/${params.jobName}/${params.buildNumber}/artifact/${params.artifactName}")
+                        sh("curl -u ${JENKINS_USER}:${JENKINS_PASS} -O ${env.JENKINS_URL}/job/${params.jobName}/${params.buildNumber}/artifact/${params.artifactName}")
                     }
                     sh("tar -xzf ${params.artifactName}")
                     echo 'Dockerizing the application...'
