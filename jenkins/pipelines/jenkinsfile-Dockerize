@@ -13,17 +13,6 @@ pipeline {
         string(name: 'artifactName', defaultValue: 'target.tar.gz', description: 'Name of the artifact to download')
     }
     stages {
-        stage('Preparation') {
-            steps {
-                container('docker') {
-                    echo 'Preparing the environment...'
-                    sh '''
-                        apt-get update
-                        apt-get install -y tar
-                    '''
-                }
-            }
-        }
         stage('Dockerize') {
             steps {
                 container('docker') {
