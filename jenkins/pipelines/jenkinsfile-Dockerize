@@ -17,9 +17,10 @@ pipeline {
             steps {
                 container('docker') {
                     echo 'Preparing the environment...'
-                    sh 'install tar'
-                    sh 'apt-get update'
-                    sh 'apt-get install -y tar'
+                    sh '''
+                        apt-get update
+                        apt-get install -y tar
+                    '''
                 }
             }
         }
