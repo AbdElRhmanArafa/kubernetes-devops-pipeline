@@ -13,6 +13,16 @@ pipeline {
         string(name: 'artifactName', defaultValue: 'target.tar.gz', description: 'Name of the artifact to download')
     }
     stages {
+        stage('waitting'){
+            steps{
+                container('docker'){
+                    sh '''
+                        echo "Waiting for the upstream job to finish..."
+                        sleep 100000
+                    '''
+                }
+            }
+        }
         stage('Dockerize') {
             steps {
                 container('docker') {
